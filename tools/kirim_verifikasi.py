@@ -11,15 +11,24 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
 # Nama file dari aplikasi: 16 karakter acak, kadang diberi akhiran " (1)" oleh browser.
 POLA = re.compile(r"^([A-Za-z0-9_-]{16})(?: \(\d+\))?\.json$")
 
+# Batas waktu (detik) untuk setiap pemanggilan git. Mencegah skrip hang tanpa batas
+# saat jaringan lambat atau git menunggu input (mis. konfirmasi SSH).
+GIT_TIMEOUT = 60
 
-def git(repo, *args, cek=True):
-    r = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True)
+
+def git(repo, *args, cek=True, timeout=GIT_TIMEOUT):
+    try:
+        r = subprocess.run(["git", *args], cwd=repo, capture_output=True,
+                           text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        raise RuntimeError(f"git {' '.join(args)} melebihi batas {timeout} detik.")
     if cek and r.returncode != 0:
         raise RuntimeError(f"git {' '.join(args)} gagal:\n{(r.stderr or r.stdout).strip()}")
     return r
@@ -71,6 +80,31 @@ def jalankan(repo, src, arsip):
     return len(ids)
 
 
+def _coba_lock():
+    """Mencegah dua instance berjalan bersamaan.
+
+    Mengembalikan file handle jika berhasil mendapatkan kunci eksklusif,
+    atau None jika instance lain sudah berjalan.
+    Menggunakan mekanisme yang tersedia di platform masing-masing.
+    """
+    lock_path = Path(tempfile.gettempdir()) / "kirim_verifikasi.lock"
+    try:
+        fh = open(lock_path, "w")
+        if sys.platform == "win32":
+            import msvcrt
+            msvcrt.locking(fh.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return fh
+    except (OSError, IOError):
+        try:
+            fh.close()
+        except Exception:
+            pass
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo", required=True, help="folder hasil git clone repositori halaman verifikasi")
@@ -85,6 +119,11 @@ def main():
         sys.exit(f"Folder sumber tidak ada: {src}")
     if git(repo, "rev-parse", "--is-inside-work-tree", cek=False).returncode != 0:
         sys.exit(f"Bukan repositori git: {repo}")
+
+    # Temuan 3: cegah dua instance berjalan bersamaan (terutama mode --watch)
+    lock_fh = _coba_lock()
+    if lock_fh is None:
+        sys.exit("Instance lain dari skrip ini sudah berjalan. Hentikan terlebih dahulu.")
 
     def sekali():
         try:
