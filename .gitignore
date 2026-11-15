@@ -1,0 +1,10 @@
+# Aplikasi invoice: hanya untuk komputer Anda, TIDAK boleh ikut terunggah.
+aplikasi/
+
+# Ekspor data lengkap dan arsip lokal. Jangan sampai ikut terunggah.
+invoice-struktur-*.json
+terkirim/
+__pycache__/
+*.pyc
+.DS_Store
+README.md
