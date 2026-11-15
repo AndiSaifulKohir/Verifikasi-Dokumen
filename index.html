@@ -1,13 +1,153 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Verifikasi dokumen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f3f5f9;--cd:#fff;--tx:#14213d;--mu:#667085;--ok:#1f9d6b;--no:#b7791f;--od:#d14343;--in:#2563eb;--bd:#e3e6ec}
-@media(prefers-color-scheme:dark){:root{--bg:#0d1420;--cd:#161f2e;--tx:#e8edf5;--mu:#93a1b8;--bd:#263247}}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.c{width:100%;max-width:440px;background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:26px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
-.k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
-.s{display:inline-block;margin:10px 0 6px;padding:6px 16px;border:2px solid currentColor;border-radius:999px;font-weight:700;letter-spacing:.06em}
-.t{font-size:28px;font-weight:700;margin:2px 0 14px}.r{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--bd)}.r span:first-child{color:var(--mu)}.r b{text-align:right}
-.i{margin-top:14px;padding:12px;border-radius:10px;background:var(--bg);font-size:14px;white-space:pre-wrap}.f{margin-top:14px;font-size:12px;color:var(--mu)}
+:root{
+  color-scheme:light;
+  --background:#f7faff;
+  --surface:#ffffff;
+  --surface-muted:#eef5fc;
+  --text:#152235;
+  --text-muted:#66758a;
+  --border:#dce7f2;
+  --blue:#1769aa;
+  --blue-dark:#0e4f83;
+  --blue-soft:#e2f0fc;
+  --ok:#1f9d6b;
+  --no:#b7791f;
+  --od:#d14343;
+  --shadow:0 18px 45px rgba(29,77,115,0.1);
+  --shadow-md:0 8px 24px rgba(29,77,115,0.08);
+  --font-sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --radius:16px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --background:#0d141c;
+    --surface:#141e29;
+    --surface-muted:#1a2a39;
+    --text:#f1f6fb;
+    --text-muted:#9eafc0;
+    --border:#293b4c;
+    --blue:#5aabeb;
+    --blue-dark:#86c5f3;
+    --blue-soft:#183950;
+    --shadow:0 18px 45px rgba(0,0,0,0.25);
+    --shadow-md:0 8px 24px rgba(0,0,0,0.18);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --background:#0d141c;
+  --surface:#141e29;
+  --surface-muted:#1a2a39;
+  --text:#f1f6fb;
+  --text-muted:#9eafc0;
+  --border:#293b4c;
+  --blue:#5aabeb;
+  --blue-dark:#86c5f3;
+  --blue-soft:#183950;
+  --shadow:0 18px 45px rgba(0,0,0,0.25);
+  --shadow-md:0 8px 24px rgba(0,0,0,0.18);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:var(--background);
+  color:var(--text);
+  font-family:var(--font-sans);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition:background-color 0.25s ease,color 0.25s ease;
+}
+.c{
+  width:100%;
+  max-width:480px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:32px;
+  box-shadow:var(--shadow-md);
+  animation:fadeInUp 0.6s cubic-bezier(0.4,0,0.2,1) backwards;
+}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.k{
+  font-size:0.75rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--blue);
+  font-weight:700;
+  margin-bottom:16px;
+  opacity:0.95;
+}
+.s{
+  display:inline-block;
+  margin:14px 0 8px;
+  padding:8px 18px;
+  border:2px solid currentColor;
+  border-radius:999px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  font-size:0.85rem;
+  transition:all 0.3s ease;
+}
+.t{
+  font-size:2.2rem;
+  font-weight:800;
+  margin:4px 0 20px;
+  letter-spacing:-0.02em;
+  line-height:1.1;
+}
+.r{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  padding:12px 0;
+  border-top:1px solid var(--border);
+  transition:background-color 0.2s ease;
+}
+.r:hover{background:var(--surface-muted)}
+.r span:first-child{
+  color:var(--text-muted);
+  font-size:0.9rem;
+  font-weight:500;
+}
+.r b{
+  text-align:right;
+  font-weight:600;
+  color:var(--text);
+}
+.i{
+  margin-top:18px;
+  padding:16px;
+  border-radius:12px;
+  background:var(--surface-muted);
+  border:1px solid var(--border);
+  font-size:14px;
+  white-space:pre-wrap;
+  line-height:1.6;
+  color:var(--text-muted);
+}
+.f{
+  margin-top:20px;
+  font-size:0.8rem;
+  color:var(--text-muted);
+  text-align:center;
+  padding-top:18px;
+  border-top:1px solid var(--border);
+}
 </style></head><body><main class="c" id="m"><div class="k">Verifikasi dokumen</div><p>Memuat…</p></main>
 <script>
 const m=document.getElementById("m"),E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -21,7 +161,7 @@ return{t:"Invoice",no:d.no,st:{label:lu?"LUNAS":"BELUM DIBAYAR",tone:lu?"ok":"wa
 rows:[["Nomor invoice",d.no],["Diterbitkan oleh",d.usaha],["Ditagihkan kepada",d.client],["Proyek",d.proyek],["Tanggal terbit",fd(d.date)],["Jatuh tempo",fd(d.due)]].filter(r=>r[1]&&r[1]!=="-"),info:d.info,upd:d.upd}}
 function show(d){d=norm(d);const st=d.st||{},td=new Date().toISOString().slice(0,10);let tone=st.tone,lb=st.label;
 if(tone==="warn"&&st.due&&st.due<td){tone="bad";lb="LEWAT JATUH TEMPO"}
-const col={ok:"var(--ok)",warn:"var(--no)",bad:"var(--od)"}[tone]||"var(--in)",t=d.t||"dokumen",
+const col={ok:"var(--ok)",warn:"var(--no)",bad:"var(--od)"}[tone]||"var(--blue)",t=d.t||"dokumen",
 rows=(Array.isArray(d.rows)?d.rows:[]).filter(r=>Array.isArray(r)&&r[1]!=null&&String(r[1])!=="").map(r=>`<div class="r"><span>${E(r[0])}</span><b>${E(r[1])}</b></div>`).join("");
 document.title="Verifikasi "+t;
 m.innerHTML=`<div class="k">Verifikasi ${E(t)}</div>${lb?`<div class="s" style="color:${col}">${E(lb)}</div>`:""}${d.big?`<div class="t">${E(d.big)}</div>`:""}${rows}
