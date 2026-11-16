@@ -3,6 +3,8 @@ aplikasi/
 
 # Ekspor data lengkap dan arsip lokal. Jangan sampai ikut terunggah.
 invoice-struktur-*.json
+invoice-*.json
+data-invoice/
 terkirim/
 __pycache__/
 *.pyc
