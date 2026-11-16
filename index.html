@@ -16,7 +16,7 @@
   --blue-soft:#e2f0fc;
   --ok:#1f9d6b;
   --no:#b7791f;
-  --od:#d14343;
+  --bad:#d14343;
   --shadow:0 18px 45px rgba(29,77,115,0.1);
   --shadow-md:0 8px 24px rgba(29,77,115,0.08);
   --font-sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -157,10 +157,10 @@ const fd=s=>{const a=String(s||"").split("-");return a.length<3?"-":+a[2]+" "+BL
 const rp=n=>"Rp"+Math.round(+n||0).toLocaleString("id-ID");
 const msg=t=>{m.innerHTML=`<div class="k">Verifikasi dokumen</div><p>${t}</p>`};
 function norm(d){if(Array.isArray(d.rows))return d;const lu=d.status==="lunas";
-return{t:"Invoice",no:d.no,st:{label:lu?"LUNAS":"BELUM DIBAYAR",tone:lu?"ok":"warn",due:lu?"":d.due},big:rp(d.total),
+return{t:"Invoice",no:d.no,st:{label:lu?"Lunas":"Menunggu Pembayaran",tone:lu?"ok":"warn",due:lu?"":d.due},big:rp(d.total),
 rows:[["Nomor invoice",d.no],["Diterbitkan oleh",d.usaha],["Ditagihkan kepada",d.client],["Proyek",d.proyek],["Tanggal terbit",fd(d.date)],["Jatuh tempo",fd(d.due)]].filter(r=>r[1]&&r[1]!=="-"),info:d.info,upd:d.upd}}
 function show(d){d=norm(d);const st=d.st||{},td=new Date().toISOString().slice(0,10);let tone=st.tone,lb=st.label;
-if(tone==="warn"&&st.due&&st.due<td){tone="bad";lb="LEWAT JATUH TEMPO"}
+if(tone==="warn"&&st.due&&st.due<td){tone="bad";lb="Lewat Jatuh Tempo"}
 const col={ok:"var(--ok)",warn:"var(--no)",bad:"var(--od)"}[tone]||"var(--blue)",t=d.t||"dokumen",
 rows=(Array.isArray(d.rows)?d.rows:[]).filter(r=>Array.isArray(r)&&r[1]!=null&&String(r[1])!=="").map(r=>`<div class="r"><span>${E(r[0])}</span><b>${E(r[1])}</b></div>`).join("");
 document.title="Verifikasi "+t;
